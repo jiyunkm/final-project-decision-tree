@@ -1,0 +1,63 @@
+{
+  "Question": {
+    "q1" : {
+      "title": "In phoning do you...",
+      "desc": "",
+      "answers": ["a1", "a2"]
+    },
+    "q2" : {
+      "title": "Which is more admirable?",
+      "desc": "",
+      "answers": ["a3", "a4"]
+    },
+    "q3" : {
+      "title": "Do you go more by: ",
+      "desc": "",
+      "answers": ["a5", "a6"]
+    },
+    "q4" : {
+      "title": "Would you say you are more",
+      "desc": "",
+      "answers": ["a7", "a8"]
+    },
+    "q5" : {
+      "title": "Independent Thinker",
+      "desc": "Independent, original, analytical and determined. Have an exceptional ability to turn theories into solid plans of action. Highly value knowledge, competence and structure. Driven to derive meaning from their visions. Long-range thinkers. Have very high standards for their performance and the performance of others. Natural leaders, but will follow if they trust existing leaders.",
+      "answers": []
+    }
+  },
+  "Answer": {
+    "a1" : {
+      "text": "rarely question that it will all be said",
+      "question": "q2"
+    },
+    "a2" : {
+      "text": "rehearse what you'll say",
+      "question": "q2"
+    },
+    "a3" : {
+      "text": "the ability to organize and be methodical",
+      "question": "q3"
+    },
+    "a4" : {
+      "text": "the ability to adapt and make do",
+      "question": "q3"
+    },
+    "a5" : {
+      "text": "facts",
+      "question": "q4"
+    },
+    "a6" : {
+      "text": "principles",
+      "question": "q4"
+    },
+    "a7" : {
+      "text": "easy-going",
+      "question": "q5"
+    },
+    "a8" : {
+      "text": "serious and determined",
+      "question": "q5"
+    }
+  }
+}

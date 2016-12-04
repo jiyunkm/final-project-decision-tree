@@ -1,0 +1,65 @@
+{
+  "Question": {
+    "q1" : {
+      "title": "Think of an animal",
+      "desc": "Does it fly?",
+      "answers": ["a1", "a2"]
+    },
+    "q2" : {
+      "title": "Does your animal",
+      "desc": "speak?",
+      "answers": ["a3", "a4"]
+    },
+    "q3" : {
+      "title": "Is your animal",
+      "desc": "a mammal?",
+      "answers": ["a5", "a6"]
+    },
+    "q4" : {
+      "title": "Your animal is...",
+      "desc": "a parrot",
+      "answers": []
+    },
+    "q5" : {
+      "title": "Your animal is...",
+      "desc": "an eagle",
+      "answers": []
+    },
+    "q6" : {
+      "title": "Your animal is...",
+      "desc": "a bear",
+      "answers": []
+    },
+    "q7" : {
+      "title": "Your animal is...",
+      "desc": "a frog",
+      "answers": []
+    }
+  },
+  "Answer": {
+    "a1" : {
+      "text": "Yes",
+      "question": "q2"
+    },
+    "a2" : {
+      "text": "No",
+      "question": "q3"
+    },
+    "a3" : {
+      "text": "Yes",
+      "question": "q4"
+    },
+    "a4" : {
+      "text": "No",
+      "question": "q5"
+    },
+    "a5" : {
+      "text": "Yes",
+      "question": "q6"
+    },
+    "a6" : {
+      "text": "No",
+      "question": "q7"
+    }
+  }
+}
