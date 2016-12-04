@@ -1,4 +1,6 @@
 import React from 'react';
+import firebase from 'firebase';
+import FirebaseConfig from './Config';
 import './App.css';
 import MainPanel from './MainPanel';
 import Header from './Header';
@@ -15,7 +17,7 @@ var App = React.createClass({
                 <MainPanel/>
                 <Footer/>
             </div>
-            
+
         )
     }
 });
