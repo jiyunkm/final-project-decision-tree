@@ -2,6 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 import FirebaseConfig from './Config';
 import './App.css';
+import Header from './Header';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import MainPanel from './MainPanel';
@@ -113,28 +114,5 @@ var App = React.createClass({
         )
     }
 });
-
-// header component
-var Header = React.createClass({
-    render() {
-        return (
-            <header>
-                <h1>DecisionTree</h1>
-                {!this.props.user &&
-                  <div>
-                    <a onClick={this.props.update} className="waves-effect waves-light btn">Sign Up</a>
-                    <a onClick={this.props.update} className="waves-effect waves-light btn">Sign In</a>
-                  </div>
-                }
-                {this.props.user &&
-                  <a onClick={this.props.update} className="waves-effect waves-light btn">Sign Out</a>
-                }
-
-            </header>
-        )
-    }
-});
-
-
 
 export default App;

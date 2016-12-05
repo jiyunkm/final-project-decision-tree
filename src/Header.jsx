@@ -6,8 +6,16 @@ var Header = React.createClass({
         return (
             <header>
                 <h1>DecisionTree</h1>
-                <a className="waves-effect waves-light btn">button</a>
-                {/* <button type="button">Click Me!</button> */}
+                {!this.props.user &&
+                  <div>
+                    <a onClick={this.props.update} className="waves-effect waves-light btn">Sign Up</a>
+                    <a onClick={this.props.update} className="waves-effect waves-light btn">Sign In</a>
+                  </div>
+                }
+                {this.props.user &&
+                  <a onClick={this.props.update} className="waves-effect waves-light btn">Sign Out</a>
+                }
+
             </header>
         )
     }
