@@ -7,13 +7,9 @@
     "react-scripts": "0.7.0"
   },
   "dependencies": {
-<<<<<<< HEAD
     "firebase": "^3.6.2",
     "jquery": "^3.1.1",
-=======
-    "jquery": "^3.1.1",
     "material-ui": "^0.16.4",
->>>>>>> a2a7d79b49002f7c5db0310d88a06539407a1763
     "materialize-css": "^0.97.8",
     "react": "^15.3.2",
     "react-dom": "^15.3.2"
