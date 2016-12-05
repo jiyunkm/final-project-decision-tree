@@ -3,11 +3,16 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 
-class UserDashboard extends React.Component {
+class TreeView extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    
     render() {
         return (
-            <div class='container'>
-                <UserConsole />
+            <div>
+                <TreeToolbar />
+                <TreeList />
             </div>
         );
     }
