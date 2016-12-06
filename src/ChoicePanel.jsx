@@ -5,10 +5,6 @@ import React from 'react';
     The panel that holds the choices
 */
 class ChoicePanel extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div className="row flex-box">
@@ -25,11 +21,7 @@ class ChoicePanel extends React.Component {
     }
 }
 
-class Choice extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
+class Choice extends React.Component {t
     render() {
         return (
             <div className="flex-item">
