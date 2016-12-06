@@ -36,27 +36,32 @@ class TreeCard extends React.Component {
     };
 
     render() {
-        
+
         const avatar = (
             <Avatar>
                 {this.props.data.id}
             </Avatar>
         );
-        
+
         return (
             <div style={styles.card}>
-            <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
-                <CardHeader
-                    title={this.props.data.title}
-                    avatar={avatar}
-                    actAsExpander={true}
-                    showExpandableButton={true}
-                    />
-                <CardText expandable={true}>
-                    {this.props.data.desc}
-                </CardText>
-            </Card>
-                </div>
+                <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
+                    <CardHeader
+                        title={this.props.data.title}
+                        avatar={avatar}
+                        actAsExpander={true}
+                        showExpandableButton={true}
+                        />
+                    <CardText expandable={true}>
+                        {this.props.data.desc}
+                    </CardText>
+                    <CardActions>
+                        <FlatButton label="Edit" />
+                        <FlatButton label="Delete" secondary={true} />
+                    </CardActions>
+                </Card>
+            </div>
+
         );
     }
 }
