@@ -12,9 +12,9 @@ import 'materialize-css/bin/materialize.js'
 var App = React.createClass({
     getInitialState(){
         return {
-          checked:false,
-          user:null,
-          authOption:'sign-in'
+            checked:false,
+            user:null,
+            authOption:'sign-in'
         }
     },
 
@@ -39,14 +39,14 @@ var App = React.createClass({
     updateAuthSection(event) {
         console.log(event.target.text);
         if (event.target.text == 'Sign Up') {
-          this.setState({authOption:'sign-up'});
+            this.setState({authOption:'sign-up'});
         } else if (event.target.text == 'Sign In') {
-          this.setState({authOption:'sign-in'});
+            this.setState({authOption:'sign-in'});
         } else {
-          firebase.auth().signOut().then(() => {
-              this.setState({user:null});
-              this.setState({authOption:'sign-in'});
-          });
+            firebase.auth().signOut().then(() => {
+                this.setState({user:null});
+                this.setState({authOption:'sign-in'});
+            });
         }
 
     },
@@ -62,13 +62,13 @@ var App = React.createClass({
         // Remember to enable email/password authentication on Firebase!
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then((user) => {
-                user.updateProfile({
-                    displayName: displayName
-                }).then(() => {
-                    this.setState({user:firebase.auth().currentUser});
-                    this.setState({authOption:'sign-out'});
-                })
-            });
+            user.updateProfile({
+                displayName: displayName
+            }).then(() => {
+                this.setState({user:firebase.auth().currentUser});
+                this.setState({authOption:'sign-out'});
+            })
+        });
 
         // Reset form
         event.target.reset();
@@ -83,26 +83,26 @@ var App = React.createClass({
 
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then((user) => {
-                this.setState({user:firebase.auth().currentUser});
-                this.setState({authOption:'sign-out'});
-            });
+            this.setState({user:firebase.auth().currentUser});
+            this.setState({authOption:'sign-out'});
+        });
 
         // Clear form
         event.target.reset();
 
-      },
+    },
 
     render() {
         if (!this.state.user) {
-          if (this.state.authOption == 'sign-up') {
-            var mainSection = <SignUp submit={this.signUp}/>
-          }
-          else if (this.state.authOption == 'sign-in') {
-            var mainSection = <SignIn submit={this.signIn}/>
-          }
+            if (this.state.authOption == 'sign-up') {
+                var mainSection = <SignUp submit={this.signUp}/>
+                    }
+            else if (this.state.authOption == 'sign-in') {
+                var mainSection = <SignIn submit={this.signIn}/>
+                    }
         } else {
-          var mainSection = <MainPanel />
-        }
+            var mainSection = <MainPanel />
+                }
         return (
             <div>
                 <Header user={this.state.user} update={this.updateAuthSection}/>
@@ -121,13 +121,13 @@ var Header = React.createClass({
             <header>
                 <h1>DecisionTree</h1>
                 {!this.props.user &&
-                  <div>
-                    <a onClick={this.props.update} className="waves-effect waves-light btn">Sign Up</a>
-                    <a onClick={this.props.update} className="waves-effect waves-light btn">Sign In</a>
-                  </div>
+                    <div>
+                        <a onClick={this.props.update} className="waves-effect waves-light btn">Sign Up</a>
+                        <a onClick={this.props.update} className="waves-effect waves-light btn">Sign In</a>
+                    </div>
                 }
                 {this.props.user &&
-                  <a onClick={this.props.update} className="waves-effect waves-light btn">Sign Out</a>
+                    <a onClick={this.props.update} className="waves-effect waves-light btn">Sign Out</a>
                 }
 
             </header>
