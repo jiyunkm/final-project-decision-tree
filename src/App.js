@@ -8,6 +8,7 @@ import MainPanel from './MainPanel';
 import Footer from './Footer';
 import 'materialize-css/bin/materialize.css'
 import 'materialize-css/bin/materialize.js'
+import Header from './Header';
 
 var App = React.createClass({
     getInitialState(){
@@ -106,31 +107,11 @@ var App = React.createClass({
         return (
             <div>
                 <Header user={this.state.user} update={this.updateAuthSection}/>
+                <input id="searchBar" type="text" name="search" placeholder="Search.."></input>
                 {mainSection}
                 <Footer/>
             </div>
 
-        )
-    }
-});
-
-// header component
-var Header = React.createClass({
-    render() {
-        return (
-            <header>
-                <h1>DecisionTree</h1>
-                {!this.props.user &&
-                    <div>
-                        <a onClick={this.props.update} className="waves-effect waves-light btn">Sign Up</a>
-                        <a onClick={this.props.update} className="waves-effect waves-light btn">Sign In</a>
-                    </div>
-                }
-                {this.props.user &&
-                    <a onClick={this.props.update} className="waves-effect waves-light btn">Sign Out</a>
-                }
-
-            </header>
         )
     }
 });
