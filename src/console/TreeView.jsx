@@ -20,7 +20,7 @@ const styles = {
         height: '100%',
     },
     list: {
-        height: '100%',
+        height: '800px',
         flex: 1,
         width: '100%',
         margin: '0 auto',
