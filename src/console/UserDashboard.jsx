@@ -26,7 +26,7 @@ class UserDashboard extends React.Component {
         return (
             <div>
                 <Header />
-                <div className='container' style={styles.console}>
+                <div style={styles.console}>
                     <UserConsole />
                 </div>
                 <Footer />
