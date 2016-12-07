@@ -1,6 +1,14 @@
 import React from 'react';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, Chip} from 'material-ui';
+import Dropdown from './CardComp/Dropdown';
+import AnswerMenu from './CardComp/AnswerMenu';
 import FlatButton from 'material-ui/FlatButton';
+import Toggle from 'material-ui/Toggle';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import '../index.css';
 
@@ -8,9 +16,26 @@ const styles = {
     card: {
         position: 'relative',
     },
+
     chip: {
         display: 'inline-block',
         margin: 2,
+    },
+
+    toggle: {
+        marginBottom: 16,
+    },
+
+    block: {
+        maxWidth: 250,
+    },
+
+    customWidth: {
+        width: 200,
+    },
+
+    button: {
+        marginRight: 20
     }
 }
 
@@ -20,6 +45,8 @@ class TreeCard extends React.Component {
         super(props);
         this.state = {
             expanded: false,
+            value: 1,
+            answers: []
         };
     }
 
@@ -39,6 +66,13 @@ class TreeCard extends React.Component {
         this.setState({expanded: false});
     };
 
+    handleChange = (event, index, value) => this.setState({value});
+
+    handleAddAnswer = () => {
+        this.answers.push();
+        this.setState({answers: false});
+    };
+
     render() {
 
         const chipAvatar = <Chip style={styles.chip}>{this.props.data.id}</Chip>;
@@ -46,19 +80,32 @@ class TreeCard extends React.Component {
         let title = '';
         let subtitle = '';
         let textComp = null;
+        let dropDown = (
+            <AnswerMenu value={this.state.value} click={this.handleClick} />
+            );
         
         if (this.props.type === 'steps') {
             title = this.props.data.title;
             subtitle = this.props.data.answers.length + ' answers';
             textComp = (
                 <CardText expandable={true}>
-                    {this.props.data.desc}
+                     <p>{this.props.data.desc}</p>
+                     <p>{dropDown}</p>
+                     <p>{
+                         <div>
+                         <FloatingActionButton mini={true} style={this.button}>
+                            <ContentAdd />
+                        </FloatingActionButton>
+                        </div>
+                     }</p>
                 </CardText>
             );
         } else {
             title = this.props.data.text;
             subtitle = "";
         }
+
+        
         
         return (
             <div style={styles.card}>
@@ -71,6 +118,7 @@ class TreeCard extends React.Component {
                         showExpandableButton={true}
                         />
                     {textComp}
+    
                     <CardActions>
                         <FlatButton label="Edit" />
                         <FlatButton label="Delete" secondary={true} />
