@@ -107,7 +107,6 @@ var App = React.createClass({
         return (
             <div>
                 <Header user={this.state.user} update={this.updateAuthSection}/>
-                <input id="searchBar" type="text" name="search" placeholder="Search.."></input>
                 {mainSection}
                 <Footer/>
             </div>
