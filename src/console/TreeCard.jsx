@@ -10,6 +10,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import AddAnswer from './CardComp/button';
+import TextField from 'material-ui/TextField';
+import TextState from "./CardComp/EditText";
 
 import '../index.css';
 
@@ -149,12 +151,14 @@ class TreeCard extends React.Component {
                 options={this.getOptions(data, optionType)} />
         );
         
+        
+        
         if (this.props.type === 'steps') {
             title = this.props.data.title;
             subtitle = this.props.data.answers.length + ' answers';
             textComp = (
                 <CardText style={styles.text} expandable={true}>
-                     <p>{this.props.data.desc}</p>
+                     <p>{<TextState title={this.props.data.desc} editing={this.state.editing}/> }</p>
                      {dropDown(this.props.data.answers)}
                      <AddAnswer edit={this.state.editing} style={this.button}/>
                 </CardText>
@@ -171,6 +175,7 @@ class TreeCard extends React.Component {
             );
         }
         
+        
         return (
             <div style={styles.card}>
                 <Card 
@@ -179,7 +184,7 @@ class TreeCard extends React.Component {
                     onExpandChange={this.handleExpandChange}>
                     
                     <CardHeader
-                        title={title}
+                        title={<TextState title={title} editing={this.state.editing}/> }
                         subtitle={subtitle}
                         avatar={chipAvatar}
                         actAsExpander={this.props.type === 'steps'}
@@ -187,7 +192,6 @@ class TreeCard extends React.Component {
                         />
                     
                     {textComp}
-    
                     <CardActions>
                         {this.state.editing ? 
                             <FlatButton label="Save" onClick={this.handleEditChange} primary={true} /> :
