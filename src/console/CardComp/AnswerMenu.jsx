@@ -27,24 +27,46 @@ const styles = {
 
 var AnswerMenu = React.createClass({
     render() {
+
+        let optionIcon = '';
+
+        if (this.props.type === 'steps') {
+            optionIcon = 'fa fa-commenting-o';
+        } else if (this.props.type === 'answers') {
+            optionIcon = 'fa fa-share';
+        }
+
         return(
             <div>
                 {this.props.items.map((item, key) => (
                     <Paper style={styles.option} zDepth={1} key={'div-' + key}>
-                        <FontIcon key={'icon-' + key} className='fa fa-commenting-o' />
-                        <Dropdown key={'drop-' + key} edit={this.props.edit} value={item} click={this.props.click} options={this.props.options} />
-                        <FontIcon key={'to-icon-' + key} className='fa fa-share' />
-                        <RaisedButton label="This is the question it redirects to." 
-                            style={styles.questionButton} 
-                            labelStyle={styles.regularButtonLabel}
-                            disabled={this.props.edit} />
-                        {this.props.edit ? 
-                            <FlatButton 
-                                key={'rm-' + key}
-                                icon={<FontIcon className='fa fa-minus-circle' />} 
-                                secondary={true}
-                                onClick={null} /> : null
+                        <FontIcon 
+                            key={'icon-' + key} 
+                            className={optionIcon} />
+
+                        <Dropdown 
+                            key={'drop-' + key} 
+                            edit={this.props.edit} value={item} 
+                            click={this.props.click} 
+                            options={this.props.options} />
+
+                        {this.props.type === 'steps' ?
+                            (<span>
+                                <FontIcon key={'to-icon-' + key} className='fa fa-share' />
+                                <RaisedButton label="This is the question it redirects to." 
+                                    style={styles.questionButton} 
+                                    labelStyle={styles.regularButtonLabel}
+                                    disabled={this.props.edit} />
+                                {this.props.edit ? 
+                                    <FlatButton 
+                                        key={'rm-' + key}
+                                        icon={<FontIcon className='fa fa-minus-circle' />} 
+                                        secondary={true}
+                                        onClick={null} /> : null
+                                }
+                            </span>) : null
                         }
+
                     </Paper>
                 ))}
 

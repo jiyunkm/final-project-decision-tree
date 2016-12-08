@@ -30,6 +30,10 @@ const styles = {
     block: {
         maxWidth: 250,
     },
+    
+    text: {
+        paddingTop: 0,
+    },
 
     customWidth: {
         width: 200,
@@ -109,6 +113,8 @@ class TreeCard extends React.Component {
                 let text = prop + ': ';
                 if (type === "Answer") {
                     text += data[type][prop]['text'];
+                } else if (type === 'Question') {
+                    text += data[type][prop]['title'];
                 }
                 options.push({ value: prop, text: text });
             }
@@ -123,41 +129,61 @@ class TreeCard extends React.Component {
         let title = '';
         let subtitle = '';
         let textComp = null;
+        let optionType = '';
+        
+        if (this.props.type === 'steps') {
+            optionType = 'Answer';
+        } else if (this.props.type === 'answers') {
+            optionType = 'Question';
+        }
+        
         let dropDown = (itemsData) => (
             <AnswerMenu 
+                type={this.props.type}
                 edit={this.state.editing} 
                 style={styles.answerMenu}
                 value={this.state.value}
                 click={this.handleClick} 
                 edit={this.state.editing} 
                 items={itemsData}
-                options={this.getOptions(data, 'Answer')} />
+                options={this.getOptions(data, optionType)} />
         );
         
         if (this.props.type === 'steps') {
             title = this.props.data.title;
             subtitle = this.props.data.answers.length + ' answers';
             textComp = (
-                <CardText expandable={true}>
+                <CardText style={styles.text} expandable={true}>
                      <p>{this.props.data.desc}</p>
                      {dropDown(this.props.data.answers)}
                      <AddAnswer edit={this.state.editing} style={this.button}/>
                 </CardText>
             );
-        } else {
+            
+        } else if (this.props.type === 'answers') {
             title = this.props.data.text;
-            subtitle = "";
+            let itemsData = [];
+            itemsData.push(this.props.data.question);
+            textComp = (
+                <CardText style={styles.text}>
+                     {dropDown(itemsData)}
+                </CardText>
+            );
         }
         
         return (
             <div style={styles.card}>
-                <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
+                <Card 
+                    expandable={this.props.type === 'steps'}
+                    expanded={this.state.expanded} 
+                    onExpandChange={this.handleExpandChange}>
+                    
                     <CardHeader
                         title={title}
                         subtitle={subtitle}
                         avatar={chipAvatar}
-                        actAsExpander={true}
-                        showExpandableButton={true}
+                        actAsExpander={this.props.type === 'steps'}
+                        showExpandableButton={this.props.type === 'steps'}
                         />
                     
                     {textComp}

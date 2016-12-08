@@ -80,7 +80,7 @@ class TreeList extends React.Component {
         
         if (this.props.type === 'answers') {
             tree = tree['Answer'];
-        } else {
+        } else if (this.props.type === 'steps') {
             tree = tree['Question'];
         }
         
