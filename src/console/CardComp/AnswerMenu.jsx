@@ -34,7 +34,10 @@ var AnswerMenu = React.createClass({
                         <FontIcon key={'icon-' + key} className='fa fa-commenting-o' />
                         <Dropdown key={'drop-' + key} edit={this.props.edit} value={item} click={this.props.click} options={this.props.options} />
                         <FontIcon key={'to-icon-' + key} className='fa fa-share' />
-                        <RaisedButton label="This is the question it redirects to." style={styles.questionButton} labelStyle={styles.regularButtonLabel} />
+                        <RaisedButton label="This is the question it redirects to." 
+                            style={styles.questionButton} 
+                            labelStyle={styles.regularButtonLabel}
+                            disabled={this.props.edit} />
                         {this.props.edit ? 
                             <FlatButton 
                                 key={'rm-' + key}
