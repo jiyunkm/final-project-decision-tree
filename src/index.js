@@ -18,6 +18,6 @@ injectTapEventPlugin();
 );*/
 
 ReactDOM.render(
-  <UserDashboard />,
+  <App />,
   document.getElementById('root')
 );
