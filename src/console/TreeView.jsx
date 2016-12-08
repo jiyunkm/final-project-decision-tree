@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui';
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle, RaisedButton} from 'material-ui';
 
 import App from '../App';
 import TreeCard from './TreeCard';
@@ -51,7 +51,10 @@ class TreeToolbar extends React.Component {
         return (
             <Toolbar style={styles.head}>
                 <ToolbarGroup firstChild={true}>
-                    <span>Nothing right now</span>
+                    <span></span>
+                </ToolbarGroup>
+                <ToolbarGroup>
+                    <RaisedButton label='Add' primary={true} />
                 </ToolbarGroup>
             </Toolbar>
         );
