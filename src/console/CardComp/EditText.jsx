@@ -12,6 +12,7 @@ var TextState = React.createClass({
             mode = (
                 <TextField
                   id="text-field-default"
+                  multiLine={true}
                   defaultValue={this.props.title}
                 />
             )
