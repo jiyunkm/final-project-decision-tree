@@ -6,7 +6,7 @@ import MenuItem from 'material-ui/MenuItem';
 var Dropdown = React.createClass({
     render() {
         return(
-            <DropDownMenu value={this.props.value} onChange={this.props.click}>
+            <DropDownMenu value={this.props.value} disabled={!this.props.edit} onChange={this.props.click}>
                 {this.props.options.map((o) => (
                     <MenuItem key={o.value} value={o.value} primaryText={o.text} />
                 ))}

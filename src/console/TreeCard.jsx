@@ -125,7 +125,7 @@ class TreeCard extends React.Component {
         let textComp = null;
         let dropDown = (itemsData) => (
             <AnswerMenu 
-                disabled={!this.state.editing} 
+                edit={this.state.editing} 
                 style={styles.answerMenu}
                 value={this.state.value}
                 click={this.handleClick} 
