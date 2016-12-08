@@ -9,6 +9,7 @@ import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import AddAnswer from './CardComp/button';
 
 import '../index.css';
 
@@ -46,12 +47,27 @@ class TreeCard extends React.Component {
         this.state = {
             expanded: false,
             value: 1,
-            answers: []
+            answers: [],
+            edit: "Edit"
         };
     }
 
     handleExpandChange = (expanded) => {
         this.setState({expanded: expanded});
+    };
+
+    handleEditChange = () => {
+        if(this.state.edit == "Edit"){
+            this.setState({
+                expanded: true,
+                edit: "Done"
+            });
+        } else {
+            this.setState({
+                edit: "Edit"
+            });
+        }
+        
     };
 
     handleToggle = (event, toggle) => {
@@ -80,8 +96,8 @@ class TreeCard extends React.Component {
         let title = '';
         let subtitle = '';
         let textComp = null;
-        let dropDown = (
-            <AnswerMenu value={this.state.value} click={this.handleClick} />
+        let dropDown = () => (
+            <AnswerMenu value={this.state.value} click={this.handleClick} edit={this.state.edit} />
             );
         
         if (this.props.type === 'steps') {
@@ -90,14 +106,8 @@ class TreeCard extends React.Component {
             textComp = (
                 <CardText expandable={true}>
                      <p>{this.props.data.desc}</p>
-                     <p>{dropDown}</p>
-                     <p>{
-                         <div>
-                         <FloatingActionButton mini={true} style={this.button}>
-                            <ContentAdd />
-                        </FloatingActionButton>
-                        </div>
-                     }</p>
+                     <p>{dropDown()}</p>
+                     <AddAnswer edit={this.state.edit} style={this.button}/>
                 </CardText>
             );
         } else {
@@ -120,7 +130,7 @@ class TreeCard extends React.Component {
                     {textComp}
     
                     <CardActions>
-                        <FlatButton label="Edit" />
+                        <FlatButton label={this.state.edit} onClick={this.handleEditChange}/>
                         <FlatButton label="Delete" secondary={true} />
                     </CardActions>
                 </Card>

@@ -8,10 +8,16 @@ import './AnswerMenu.css';
 
 var AnswerMenu = React.createClass({
     render() {
+        let button = null;
+        if(this.props.edit == "Done") {
+            button = (
+                <FlatButton label="Delete" secondary={true} />
+            )
+        }
         return(
             <div>
-                <Dropdown className="menu" value={this.props.value} click={this.props.click}/>
-                <FlatButton className="delete" label="Delete" secondary={true} />
+                <Dropdown value={this.props.value} click={this.props.click}/>
+                {button}
                 
             </div>
         )
