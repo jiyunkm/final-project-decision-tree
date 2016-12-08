@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, Chip} from 'material-ui';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, Chip, FontIcon} from 'material-ui';
 import Dropdown from './CardComp/Dropdown';
 import AnswerMenu from './CardComp/AnswerMenu';
 import FlatButton from 'material-ui/FlatButton';
@@ -37,8 +37,14 @@ const styles = {
 
     button: {
         marginRight: 20
-    }
+    },
+    
+    answerMenu: {
+        display: 'block',
+    },
 }
+
+var data = require('../d.json');
 
 class TreeCard extends React.Component {
 
@@ -48,7 +54,7 @@ class TreeCard extends React.Component {
             expanded: false,
             value: 1,
             answers: [],
-            edit: "Edit"
+            editing: false
         };
     }
 
@@ -57,17 +63,23 @@ class TreeCard extends React.Component {
     };
 
     handleEditChange = () => {
-        if(this.state.edit == "Edit"){
+        if(!this.state.editing){
             this.setState({
                 expanded: true,
-                edit: "Done"
+                editing: true,
             });
         } else {
             this.setState({
-                edit: "Edit"
+                editing: false,
             });
         }
         
+    };
+
+    handleEditCancel = () => {
+        if (this.state.editing) {
+            this.setState({ editing: false });
+        }
     };
 
     handleToggle = (event, toggle) => {
@@ -89,6 +101,21 @@ class TreeCard extends React.Component {
         this.setState({answers: false});
     };
 
+    getOptions = (data, type) => {
+        let options = [];
+        if (data.hasOwnProperty(type)) {
+            for (var prop in data[type]) {
+                if (!data[type].hasOwnProperty(prop)) continue;
+                let text = prop + ': ';
+                if (type === "Answer") {
+                    text += data[type][prop]['text'];
+                }
+                options.push({ value: prop, text: text });
+            }
+        }
+        return options;
+    };
+
     render() {
 
         const chipAvatar = <Chip style={styles.chip}>{this.props.data.id}</Chip>;
@@ -96,9 +123,16 @@ class TreeCard extends React.Component {
         let title = '';
         let subtitle = '';
         let textComp = null;
-        let dropDown = () => (
-            <AnswerMenu value={this.state.value} click={this.handleClick} edit={this.state.edit} />
-            );
+        let dropDown = (itemsData) => (
+            <AnswerMenu 
+                disabled={!this.state.editing} 
+                style={styles.answerMenu}
+                value={this.state.value}
+                click={this.handleClick} 
+                edit={this.state.editing} 
+                items={itemsData}
+                options={this.getOptions(data, 'Answer')} />
+        );
         
         if (this.props.type === 'steps') {
             title = this.props.data.title;
@@ -106,16 +140,14 @@ class TreeCard extends React.Component {
             textComp = (
                 <CardText expandable={true}>
                      <p>{this.props.data.desc}</p>
-                     <p>{dropDown()}</p>
-                     <AddAnswer edit={this.state.edit} style={this.button}/>
+                     {dropDown(this.props.data.answers)}
+                     <AddAnswer edit={this.state.editing} style={this.button}/>
                 </CardText>
             );
         } else {
             title = this.props.data.text;
             subtitle = "";
         }
-
-        
         
         return (
             <div style={styles.card}>
@@ -127,11 +159,21 @@ class TreeCard extends React.Component {
                         actAsExpander={true}
                         showExpandableButton={true}
                         />
+                    
                     {textComp}
     
                     <CardActions>
-                        <FlatButton label={this.state.edit} onClick={this.handleEditChange}/>
-                        <FlatButton label="Delete" secondary={true} />
+                        {this.state.editing ? 
+                            <FlatButton label="Save" onClick={this.handleEditChange} primary={true} /> :
+                            <FlatButton icon={<FontIcon className='fa fa-pencil' />} onClick={this.handleEditChange} />                               
+                        }
+                        
+                        {this.state.editing ?
+                            <FlatButton label="Cancel" onClick={this.handleEditCancel} /> :
+                            null
+                        }
+                        
+                        <FlatButton icon={<FontIcon className='fa fa-trash' />} secondary={true} />
                     </CardActions>
                 </Card>
             </div>
