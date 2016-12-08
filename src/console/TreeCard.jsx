@@ -48,6 +48,10 @@ const styles = {
     answerMenu: {
         display: 'block',
     },
+    
+    editing: {
+        backgroundColor: '#E1F5FE',
+    }
 }
 
 var data = require('../d.json');
@@ -57,10 +61,10 @@ class TreeCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            expanded: false,
+            expanded: this.props.edit,
             value: 1,
             answers: [],
-            editing: false
+            editing: this.props.edit,
         };
     }
 
@@ -177,8 +181,8 @@ class TreeCard extends React.Component {
         
         
         return (
-            <div style={styles.card}>
-                <Card 
+            <div id={this.props.data.id}  style={styles.card}>
+                <Card style={this.state.editing ? styles.editing : null} 
                     expandable={this.props.type === 'steps'}
                     expanded={this.state.expanded} 
                     onExpandChange={this.handleExpandChange}>
