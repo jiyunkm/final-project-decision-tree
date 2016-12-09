@@ -31,20 +31,21 @@ const styles = {
 class TreeView extends React.Component {
     constructor(props) {
         super(props);
-        
         this.state = {
-            treeData: null,
+            tree: this.props.tree,
             editId: -1,
         }
     }
     
-    componentWillMount() {
-        this.setState({ treeData: require('../d.json') });
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.tree !== null) {
+            this.setState({ tree: nextProps.tree });
+        }
     }
     
     addClick = (e) => {
         e.preventDefault();
-        let o = this.state.treeData;
+        let o = this.state.tree;
         let p = null;
         let newProp = '';
         if (this.props.type === 'steps') {
@@ -60,12 +61,11 @@ class TreeView extends React.Component {
             if (!p.hasOwnProperty(prop)) continue;
             let idVal = parseInt(prop.substring(1));
             if (max < idVal) {
-                max = idVal
+                max = idVal;
             }
         }
         
         newProp += (max + 1).toString();
-        console.log(newProp);
         
         if (this.props.type === 'steps') {
             o['Question'][newProp] = {
@@ -80,17 +80,21 @@ class TreeView extends React.Component {
             }
         }
         
-        this.setState({ treeData: o, editId: newProp, });
+        this.setState({ tree: o, editId: newProp, });
     }
 
     render() {
+        console.log('----- Rendering lists -----');
+        console.log(this.state.tree);
+        console.log('---------------------------');
         return (
             <div style={styles.view}>
                 <TreeToolbar addClick={this.addClick} />
                 <TreeList 
                     ref='list'
                     type={this.props.type} 
-                    treeData={this.state.treeData}
+                    tree={this.state.tree}
+                    setTree={this.props.setTree}
                     editId={this.state.editId} />
             </div>
         );
@@ -118,19 +122,17 @@ class TreeList extends React.Component {
 
         this.state = {
             currentCard: null,
-            currentTree: null,
             currentList: null,
             // TODO: Future implementation includes search & filter
         };
-        this.convertTreeToArray = this.convertTreeToArray.bind(this);
     }
     
     componentWillMount() {
-        this.init();
+        this.init(this.props.tree, this.props.type);
     }
     
-    componentWillReceiveProps() {
-        this.init();
+    componentWillReceiveProps(nextProps) {
+        this.init(nextProps.tree, nextProps.type);
     }
     
     componentDidUpdate() {
@@ -143,26 +145,24 @@ class TreeList extends React.Component {
         }
     }
     
-    init = () => {
-        if (this.props.treeData === null) return;
+    init = (tree, type) => {
+        if (tree === null) return;
         
-        let tree = this.props.treeData;
-        console.log(this.props.treeData);
+        let o = tree;
         
-        if (this.props.type === 'answers') {
-            tree = tree['Answer'];
-        } else if (this.props.type === 'steps') {
-            tree = tree['Question'];
+        if (type === 'answers') {
+            o = tree['Answer'];
+        } else if (type === 'steps') {
+            o = tree['Question'];
         }
         
-        let arr = this.convertTreeToArray(tree);
+        let arr = this.convertTreeToArray(o);
         this.setState({ 
-            currentTree: tree,
             currentList: arr,
         });
     }
     
-    convertTreeToArray(tree) {
+    convertTreeToArray = (tree) => {
         if (!tree || tree === null) return null;
         
         var arr = Object.keys(tree).map((key) => {
@@ -179,11 +179,31 @@ class TreeList extends React.Component {
         return arr;
     }
 
+    // This function changes the data of the given node in the tree. 
+    // It is passed to each individual card to save its changes.
+    setData = (id, nodeData) => {
+        let o = null;
+        console.log(this.props);
+        if (this.props.type === 'answers') {
+            o = this.props.tree['Answer'];
+        } else if (this.props.type === 'steps') {
+            o = this.props.tree['Qeustion'];
+        }
+        console.log(o);
+        
+        for (var prop in o) {
+            if (!prop.hasOwnProperty(prop)) continue;
+            
+            if (prop == id) {
+                o[prop] = nodeData;
+            }
+        }
+        
+        this.props.setTree(o);
+    }
+
     render() {
         let list = this.state.currentList;
-        
-        console.log(list);
-        
         return (
             <div style={styles.root}>
                 <div style={styles.list}>
@@ -195,6 +215,7 @@ class TreeList extends React.Component {
                                        type={this.props.type}
                                        index={idx}
                                        data={nodeData}
+                                       setData={this.setData}
                                        edit={nodeData.id == this.props.editId} />
                         }) : null
                     }

@@ -14,17 +14,17 @@ import UserDashboard from './console/UserDashboard';
 var App = React.createClass({
     getInitialState(){
         return {
-            checked:false,
-            user:null,
+            checked: false,
+            user: null,
             authOption:'sign-in',
             searchString:'',
-            tree:[]
+            tree: null
         }
     },
 
     update: function(event) {
-       var value = event.target.value;
-       this.setState({searchString: value});
+        var value = event.target.value;
+        this.setState({searchString: value});
     },
 
     // When component mounts, check the user
@@ -102,32 +102,47 @@ var App = React.createClass({
     },
 
     handleSubmit(event) {
-      event.preventDefault();
-      // this.userRef = firebase.database().ref(this.state.searchString);
-      // this.userRef.on("value", function(snapshot) {
-      //     snapshot.forEach(function(messageSnapshot) {
-      //       var tree = messageSnapshot.val();
-      //       console.log(tree);
-      //     });
-      // });
+        event.preventDefault();
+        // this.userRef = firebase.database().ref(this.state.searchString);
+        // this.userRef.on("value", function(snapshot) {
+        //     snapshot.forEach(function(messageSnapshot) {
+        //       var tree = messageSnapshot.val();
+        //       console.log(tree);
+        //     });
+        // });
     },
 
     render() {
-      if (this.state.searchString) {
-        console.log("render");
-        var mainSection = <MainPanel tree={this.state.searchString}/>
-      } else {
-        if (!this.state.user) {
-            if (this.state.authOption == 'sign-up') {
-                var mainSection = <SignUp submit={this.signUp}/>
-                    }
-            else if (this.state.authOption == 'sign-in') {
-                var mainSection = <SignIn submit={this.signIn}/>
-                    }
+        if (this.state.searchString) {
+            console.log("render");
+            var mainSection = <MainPanel tree={this.state.searchString}/>;
         } else {
-            var mainSection = <UserDashboard />
+            if (!this.state.user || this.state.user === null) {
+                if (this.state.authOption == 'sign-up') {
+                    var mainSection = <SignUp submit={this.signUp}/>;
                 }
-      }
+                else if (this.state.authOption == 'sign-in') {
+                    var mainSection = <SignIn submit={this.signIn}/>;
+                }
+            } else {
+                var userRef = firebase.database().ref(this.state.user.displayName);
+                
+                var getTreeData = function(callback) {
+                    userRef.once('value').then((snapshot) => {
+                        callback(snapshot.val());
+                    });
+                };
+                
+                var setTreeData = function(newTree) {
+                    userRef.set(null);
+                    userRef.push(newTree);
+                };
+                                
+                var mainSection = <UserDashboard 
+                                      getTreeData={getTreeData}
+                                      setTreeData={setTreeData} />;
+            }
+        }
         // if (!this.state.user) {
         //     if (this.state.authOption == 'sign-up') {
         //         var mainSection = <SignUp submit={this.signUp}/>

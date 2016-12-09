@@ -60,6 +60,9 @@ class TreeCard extends React.Component {
 
     constructor(props) {
         super(props);
+        console.log('---- Constructing card ----');
+        console.log(this.props);
+        console.log('---------------------------');
         this.state = {
             expanded: this.props.edit,
             value: 1,
@@ -78,19 +81,18 @@ class TreeCard extends React.Component {
     };
 
     handleEditChange = (e) => {
-        var data = null;
         if(!this.state.editing){
             this.setState({
                 expanded: true,
                 editing: true,
             });
-            
-            
         } else {
+            // Saving
+            let data = null;
             this.setState({
                 editing: false,
             })
-            
+
             if(this.props.type === 'steps'){
                 data = {
                     "title": this.state.title,
@@ -100,11 +102,11 @@ class TreeCard extends React.Component {
             } else {
                 data = {
                     "question": this.state.question,
-                    "id": this.props.data.id,
                     "text": this.state.text
                 }
             }
-        console.log(data);
+            console.log(data);
+            this.props.setData(this.props.id, data)
         }
     };
 
@@ -191,7 +193,7 @@ class TreeCard extends React.Component {
     componentWillMount() {
         if(this.props.type === 'steps'){
                 this.setState({
-                    answers: this.props.data.answers,
+                    answers: this.props.data.hasOwnProperty('answers') ? this.props.data.answers : [],
                     title: this.props.data.title,
                     desc: this.props.data.desc
                 })
@@ -233,7 +235,9 @@ class TreeCard extends React.Component {
         
         if (this.props.type === 'steps') {
             title = this.props.data.title;
-            subtitle = this.props.data.answers.length + ' answers';
+            subtitle = this.props.data.hasOwnProperty('answers') ? 
+                this.props.data.answers.length + ' answers' : 
+                'No answer';
             textComp = (
                 <CardText style={styles.text} expandable={true}>
                      <p>{<TextState title={this.props.data.desc} editing={this.state.editing} handle={this.handleDescChange}/> }</p>
@@ -242,7 +246,6 @@ class TreeCard extends React.Component {
                      <AddAnswer edit={this.state.editing} style={this.button} click={this.handleAddAnswer}/>
                 </CardText>
             );
-            console.log(this.props.data.answers);
             
         } else if (this.props.type === 'answers') {
             title = this.props.data.text;
