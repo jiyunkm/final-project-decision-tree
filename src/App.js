@@ -143,8 +143,8 @@ var App = React.createClass({
 
     render() {
         if (this.state.searchString) {
-            console.log("render");
-            var mainSection = <MainPanel tree={this.state.searchString}/>;
+            console.log("render: " + this.state.searchString);
+            var mainSection = <MainPanel searchString={this.state.searchString} />;
         } else {
             if (!this.state.user || this.state.user === null) {
                 if (this.state.authOption == 'sign-up') {
