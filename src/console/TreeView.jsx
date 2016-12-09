@@ -182,6 +182,8 @@ class TreeList extends React.Component {
     // This function changes the data of the given node in the tree. 
     // It is passed to each individual card to save its changes.
     setData = (id, nodeData) => {
+        console.log('id: ' + id);
+        console.log(nodeData);
         let o = null;
         console.log(this.props);
         if (this.props.type === 'answers') {
@@ -193,8 +195,8 @@ class TreeList extends React.Component {
         console.log(o);
         
         for (var prop in o) {
-            if (!prop.hasOwnProperty(prop)) continue;
-            
+            if (!o.hasOwnProperty(prop)) continue;
+            console.log('prop: ' + prop);
             if (prop == id) {
                 o[prop] = nodeData;
             }
@@ -208,6 +210,8 @@ class TreeList extends React.Component {
         }
         
         if (t && t !== null) {
+            console.log('t:');
+            console.log(t);
             this.props.setTree(t);
         }
     }
@@ -226,6 +230,7 @@ class TreeList extends React.Component {
                                        index={idx}
                                        data={nodeData}
                                        setData={this.setData}
+                                       tree={this.props.tree}
                                        edit={nodeData.id == this.props.editId} />
                         }) : null
                     }
