@@ -8,14 +8,23 @@ import MainPanel from './MainPanel';
 import Footer from './Footer';
 import 'materialize-css/bin/materialize.css'
 import 'materialize-css/bin/materialize.js'
+import Header from './Header';
+import UserDashboard from './console/UserDashboard';
 
 var App = React.createClass({
     getInitialState(){
         return {
-          checked:false,
-          user:null,
-          authOption:'sign-in'
+            checked: false,
+            user: null,
+            authOption:'sign-in',
+            searchString:'',
+            tree: null
         }
+    },
+
+    update: function(event) {
+        var value = event.target.value;
+        this.setState({searchString: value});
     },
 
     // When component mounts, check the user
@@ -39,14 +48,14 @@ var App = React.createClass({
     updateAuthSection(event) {
         console.log(event.target.text);
         if (event.target.text == 'Sign Up') {
-          this.setState({authOption:'sign-up'});
+            this.setState({authOption:'sign-up'});
         } else if (event.target.text == 'Sign In') {
-          this.setState({authOption:'sign-in'});
+            this.setState({authOption:'sign-in'});
         } else {
-          firebase.auth().signOut().then(() => {
-              this.setState({user:null});
-              this.setState({authOption:'sign-in'});
-          });
+            firebase.auth().signOut().then(() => {
+                this.setState({user:null});
+                this.setState({authOption:'sign-in'});
+            });
         }
 
     },
@@ -62,13 +71,13 @@ var App = React.createClass({
         // Remember to enable email/password authentication on Firebase!
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then((user) => {
-                user.updateProfile({
-                    displayName: displayName
-                }).then(() => {
-                    this.setState({user:firebase.auth().currentUser});
-                    this.setState({authOption:'sign-out'});
-                })
-            });
+            user.updateProfile({
+                displayName: displayName
+            }).then(() => {
+                this.setState({user:firebase.auth().currentUser});
+                this.setState({authOption:'sign-out'});
+            })
+        });
 
         // Reset form
         event.target.reset();
@@ -83,54 +92,78 @@ var App = React.createClass({
 
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then((user) => {
-                this.setState({user:firebase.auth().currentUser});
-                this.setState({authOption:'sign-out'});
-            });
+            this.setState({user:firebase.auth().currentUser});
+            this.setState({authOption:'sign-out'});
+        });
 
         // Clear form
         event.target.reset();
 
-      },
+    },
+
+    handleSubmit(event) {
+        event.preventDefault();
+        // this.userRef = firebase.database().ref(this.state.searchString);
+        // this.userRef.on("value", function(snapshot) {
+        //     snapshot.forEach(function(messageSnapshot) {
+        //       var tree = messageSnapshot.val();
+        //       console.log(tree);
+        //     });
+        // });
+    },
 
     render() {
-        if (!this.state.user) {
-          if (this.state.authOption == 'sign-up') {
-            var mainSection = <SignUp submit={this.signUp}/>
-          }
-          else if (this.state.authOption == 'sign-in') {
-            var mainSection = <SignIn submit={this.signIn}/>
-          }
+        if (this.state.searchString) {
+            console.log("render");
+            var mainSection = <MainPanel tree={this.state.searchString}/>;
         } else {
-          var mainSection = <MainPanel />
+            if (!this.state.user || this.state.user === null) {
+                if (this.state.authOption == 'sign-up') {
+                    var mainSection = <SignUp submit={this.signUp}/>;
+                }
+                else if (this.state.authOption == 'sign-in') {
+                    var mainSection = <SignIn submit={this.signIn}/>;
+                }
+            } else {
+                var userRef = firebase.database().ref(this.state.user.displayName);
+                
+                var getTreeData = function(callback) {
+                    userRef.once('value').then((snapshot) => {
+                        callback(snapshot.val());
+                    });
+                };
+                
+                var setTreeData = function(newTree) {
+                    userRef.set(null);
+                    userRef.push(newTree);
+                };
+                                
+                var mainSection = <UserDashboard 
+                                      getTreeData={getTreeData}
+                                      setTreeData={setTreeData} />;
+            }
         }
+        // if (!this.state.user) {
+        //     if (this.state.authOption == 'sign-up') {
+        //         var mainSection = <SignUp submit={this.signUp}/>
+        //             }
+        //     else if (this.state.authOption == 'sign-in') {
+        //         var mainSection = <SignIn submit={this.signIn}/>
+        //             }
+        // } else {
+        //     var mainSection = <MainPanel />
+        //         }
         return (
             <div>
                 <Header user={this.state.user} update={this.updateAuthSection}/>
+                <form id = "search">
+                    <input id = "searchBar" value={this.state.searchString} onChange={this.update} type="text" placeholder="Search..." required  />
+                    <input id = "searchButton" onClick={this.handleSubmit} type="submit" value="Search" />
+                </form>
                 {mainSection}
                 <Footer/>
             </div>
 
-        )
-    }
-});
-
-// header component
-var Header = React.createClass({
-    render() {
-        return (
-            <header>
-                <h1>DecisionTree</h1>
-                {!this.props.user &&
-                  <div>
-                    <a onClick={this.props.update} className="waves-effect waves-light btn">Sign Up</a>
-                    <a onClick={this.props.update} className="waves-effect waves-light btn">Sign In</a>
-                  </div>
-                }
-                {this.props.user &&
-                  <a onClick={this.props.update} className="waves-effect waves-light btn">Sign Out</a>
-                }
-
-            </header>
         )
     }
 });

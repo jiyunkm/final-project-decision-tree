@@ -5,6 +5,8 @@ import './index.css';
 import Question from './Question';
 import ChoicePanel from './ChoicePanel';
 import $ from 'jquery';
+import firebase from 'firebase';
+import FirebaseConfig from './Config';
 
 /* The main panel that holds the Question/Choice elements and
     manage data reading and updating */
@@ -50,7 +52,18 @@ class MainPanel extends React.Component {
     // to the given question id, then set the state to represent
     // the question
     updateQuestion(id) {
-        var tree = require('./d.json');
+        var tree = [];
+        this.userRef = firebase.database().ref(this.props.searchString);
+        this.userRef.on("child_added", function(snapshot) {
+            snapshot.forEach(function(messageSnapshot) {
+              tree = messageSnapshot.val();
+              console.log(tree);
+              console.log(tree['Question'][id].answers);
+            });
+        });
+
+        //var tree = require('./d.json');
+
         var choices = [];
         var answers = tree['Question'][id].answers;
         for(var i = 0; i < answers.length; i++) {
