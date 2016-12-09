@@ -187,8 +187,9 @@ class TreeList extends React.Component {
         if (this.props.type === 'answers') {
             o = this.props.tree['Answer'];
         } else if (this.props.type === 'steps') {
-            o = this.props.tree['Qeustion'];
+            o = this.props.tree['Question'];
         }
+        console.log('o:');
         console.log(o);
         
         for (var prop in o) {
@@ -199,7 +200,16 @@ class TreeList extends React.Component {
             }
         }
         
-        this.props.setTree(o);
+        let t = this.props.tree;
+        if (this.props.type === 'answers') {
+            t['Answer'] = o;
+        } else if (this.props.type === 'steps') {
+            t['Question'] = o;
+        }
+        
+        if (t && t !== null) {
+            this.props.setTree(t);
+        }
     }
 
     render() {

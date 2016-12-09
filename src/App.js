@@ -75,6 +75,35 @@ var App = React.createClass({
                 displayName: displayName
             }).then(() => {
                 this.setState({user:firebase.auth().currentUser});
+
+                var userRef = firebase.database().ref(this.state.user.displayName);
+                userRef.once('value').then((snapshot) => {
+                    let o = snapshot.val();
+                    if (o === null || o[Object.keys(o)[0]] === null) {
+                        userRef.set(null);
+                        userRef.push({
+                            'Question': {
+                                'q1': {
+                                    'title': 'Welcome. This is your first question!',
+                                    'desc': 'This is the description area.',
+                                    'answers': ['a1'],
+                                },
+                                'q2': {
+                                    'title': 'This question does not have an answer!',
+                                    'desc': 'Therefore it is a leaf of the tree.',
+                                    'answers': [],
+                                }
+                            },
+                            'Answer': {
+                                'a1': {
+                                    'text': 'This is your first answer.',
+                                    'question': 'q1'
+                                }
+                            }
+                        })
+                    }
+                });
+
                 this.setState({authOption:'sign-out'});
             })
         });
@@ -126,18 +155,18 @@ var App = React.createClass({
                 }
             } else {
                 var userRef = firebase.database().ref(this.state.user.displayName);
-                
+
                 var getTreeData = function(callback) {
                     userRef.once('value').then((snapshot) => {
                         callback(snapshot.val());
                     });
                 };
-                
+
                 var setTreeData = function(newTree) {
                     userRef.set(null);
                     userRef.push(newTree);
                 };
-                                
+
                 var mainSection = <UserDashboard 
                                       getTreeData={getTreeData}
                                       setTreeData={setTreeData} />;
