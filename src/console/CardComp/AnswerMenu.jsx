@@ -44,6 +44,19 @@ class AnswerMenu extends React.Component {
         this.setBottonLabel(key);
     }*/
     
+    getButtonLabel = (key) => {
+        let opt = this.props.options;
+        let itm = this.props.items[key];
+        
+        for (var i = 0, len = opt.length; i < len; i++) {
+            if (opt[i].value == itm) {
+                return opt[i].redr;
+            }
+        }
+        
+        return ' ';
+    }
+    
     render() {
 
         let optionIcon = '';
@@ -77,7 +90,9 @@ class AnswerMenu extends React.Component {
                         {this.props.type === 'steps' ?
                             (<span>
                                 <FontIcon key={'to-icon-' + key} className='fa fa-share' />
-                                <RaisedButton label='' 
+                                <RaisedButton 
+                                    id={this.getButtonLabel(key)}
+                                    label={this.getButtonLabel(key)} 
                                     style={styles.questionButton} 
                                     labelStyle={styles.regularButtonLabel}
                                     disabled={this.props.edit}
