@@ -185,10 +185,12 @@ var App = React.createClass({
         return (
             <div>
                 <Header user={this.state.user} update={this.updateAuthSection}/>
-                <form id = "search">
-                    <input id = "searchBar" value={this.state.searchString} onChange={this.update} type="text" placeholder="Search..." required  />
-                    <input id = "searchButton" onClick={this.handleSubmit} type="submit" value="Search" />
-                </form>
+                <div id='search-container'>
+                    <form id = "search">
+                        <input id = "searchBar" value={this.state.searchString} onChange={this.update} type="text" placeholder="Search..." required  />
+                        <input id = "searchButton" onClick={this.handleSubmit} type="submit" value="Search" />
+                    </form>
+                </div>
                 {mainSection}
                 <Footer/>
             </div>

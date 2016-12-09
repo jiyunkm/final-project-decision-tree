@@ -25,7 +25,25 @@ const styles = {
     }
 }
 
-var AnswerMenu = React.createClass({
+class AnswerMenu extends React.Component {
+/*    constructor(props) {
+        super(props);
+        
+        this.state = {
+            bottonLabel: this.setBottonLabel(this.props.items.indexOf(this.props)),
+        };
+    }*/
+    
+/*    setBottonLabel = (key) => {
+        this.setState({ bottonLabel: this.props.options[key].redr });
+        console.log('botton');
+        console.log(this.state.bottonLabel);
+    }
+    
+    optionOnChange = (event, key, payload) => {
+        this.setBottonLabel(key);
+    }*/
+    
     render() {
 
         let optionIcon = '';
@@ -35,6 +53,10 @@ var AnswerMenu = React.createClass({
         } else if (this.props.type === 'answers') {
             optionIcon = 'fa fa-share';
         }
+        console.log('---- Rendering options ----');
+        console.log(this.props.options);
+        console.log(this.props.items[0]);
+        console.log('botton idx: ' + this.props.options.indexOf(this.props.items[0]));
 
         return(
             <div>
@@ -55,7 +77,7 @@ var AnswerMenu = React.createClass({
                         {this.props.type === 'steps' ?
                             (<span>
                                 <FontIcon key={'to-icon-' + key} className='fa fa-share' />
-                                <RaisedButton label="This is the question it redirects to." 
+                                <RaisedButton label='' 
                                     style={styles.questionButton} 
                                     labelStyle={styles.regularButtonLabel}
                                     disabled={this.props.edit}
@@ -77,6 +99,6 @@ var AnswerMenu = React.createClass({
             </div>
         )
     }
-});
+};
 
 export default AnswerMenu;
