@@ -9,14 +9,22 @@ import Footer from './Footer';
 import 'materialize-css/bin/materialize.css'
 import 'materialize-css/bin/materialize.js'
 import Header from './Header';
+import UserDashboard from './console/UserDashboard';
 
 var App = React.createClass({
     getInitialState(){
         return {
             checked:false,
             user:null,
-            authOption:'sign-in'
+            authOption:'sign-in',
+            searchString:'',
+            tree:[]
         }
+    },
+
+    update: function(event) {
+       var value = event.target.value;
+       this.setState({searchString: value});
     },
 
     // When component mounts, check the user
@@ -93,7 +101,22 @@ var App = React.createClass({
 
     },
 
+    handleSubmit(event) {
+      event.preventDefault();
+      // this.userRef = firebase.database().ref(this.state.searchString);
+      // this.userRef.on("value", function(snapshot) {
+      //     snapshot.forEach(function(messageSnapshot) {
+      //       var tree = messageSnapshot.val();
+      //       console.log(tree);
+      //     });
+      // });
+    },
+
     render() {
+      if (this.state.searchString) {
+        console.log("render");
+        var mainSection = <MainPanel tree={this.state.searchString}/>
+      } else {
         if (!this.state.user) {
             if (this.state.authOption == 'sign-up') {
                 var mainSection = <SignUp submit={this.signUp}/>
@@ -102,11 +125,26 @@ var App = React.createClass({
                 var mainSection = <SignIn submit={this.signIn}/>
                     }
         } else {
-            var mainSection = <MainPanel />
+            var mainSection = <UserDashboard />
                 }
+      }
+        // if (!this.state.user) {
+        //     if (this.state.authOption == 'sign-up') {
+        //         var mainSection = <SignUp submit={this.signUp}/>
+        //             }
+        //     else if (this.state.authOption == 'sign-in') {
+        //         var mainSection = <SignIn submit={this.signIn}/>
+        //             }
+        // } else {
+        //     var mainSection = <MainPanel />
+        //         }
         return (
             <div>
                 <Header user={this.state.user} update={this.updateAuthSection}/>
+                <form id = "search">
+                    <input id = "searchBar" value={this.state.searchString} onChange={this.update} type="text" placeholder="Search..." required  />
+                    <input id = "searchButton" onClick={this.handleSubmit} type="submit" value="Search" />
+                </form>
                 {mainSection}
                 <Footer/>
             </div>
