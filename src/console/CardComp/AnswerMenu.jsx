@@ -47,7 +47,7 @@ var AnswerMenu = React.createClass({
                         <Dropdown 
                             key={'drop-' + key} 
                             edit={this.props.edit} value={item} 
-                            click={this.props.click} 
+                            click={(target, prop, value) => this.props.click(key, target, prop, value)} 
                             options={this.props.options}
                             index={key}
                         />
@@ -65,7 +65,7 @@ var AnswerMenu = React.createClass({
                                         key={'rm-' + key}
                                         icon={<FontIcon className='fa fa-minus-circle' />} 
                                         secondary={true}
-                                        onClick={this.props.handleDelAnswer} /> : null
+                                        onClick={() => this.props.handleDelAnswer(key)} /> : null
                                 }
                             </span>) : null
                         }

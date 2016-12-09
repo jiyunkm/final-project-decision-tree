@@ -123,11 +123,11 @@ class TreeCard extends React.Component {
             this.setState({ 
                 editing: false,
 
+                answers: this.state.tempAnswers,
                 title: this.state.tempTitle,
                 desc: this.state.tempDesc,
                 text: this.state.tempText,
                 question: this.state.tempQuestion,
-                answers: this.state.tempAnswers
             });
         }
 
@@ -161,25 +161,24 @@ class TreeCard extends React.Component {
         });
     }
     
-    handleClick = (event, index, obj) => {
-        var answers = this.state.answers;
-        var questionIndex = 5;
-        
+    handleClick = (index, target, prop, value) => {
         if(this.props.type === 'steps') {
-            if(questionIndex + 1 > answers.length) {
-                answers.push(obj);
+            var answers = this.state.answers;
+            if(index + 1 > answers.length) {
+                answers.push(value);
                 
             } else {
-                answers[questionIndex] = obj;
+                answers[index] = value;
             }
             this.setState({
                 answers: answers
             })
         } else {
             this.setState({
-                question: obj
+                question: value
             })
         }
+        // console.log(this.state.answers);
     }
     
     handleAddAnswer = () => {
@@ -196,9 +195,9 @@ class TreeCard extends React.Component {
 
     }
 
-    handleDelAnswer = () => {
+    handleDelAnswer = (index) => {
         var answers = this.state.answers;
-        var index = 0;
+        var index = index;
         answers.splice(index, 1);
         this.setState({
             answers: answers
