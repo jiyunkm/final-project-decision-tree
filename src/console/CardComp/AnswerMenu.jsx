@@ -58,13 +58,14 @@ var AnswerMenu = React.createClass({
                                 <RaisedButton label="This is the question it redirects to." 
                                     style={styles.questionButton} 
                                     labelStyle={styles.regularButtonLabel}
-                                    disabled={this.props.edit} />
+                                    disabled={this.props.edit}
+                                    onClick={this.props.redirectHandle} />
                                 {this.props.edit ? 
                                     <FlatButton 
                                         key={'rm-' + key}
                                         icon={<FontIcon className='fa fa-minus-circle' />} 
                                         secondary={true}
-                                        onClick={null} /> : null
+                                        onClick={this.props.handleDelAnswer} /> : null
                                 }
                             </span>) : null
                         }

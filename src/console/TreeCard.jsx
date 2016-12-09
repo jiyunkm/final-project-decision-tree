@@ -144,7 +144,7 @@ class TreeCard extends React.Component {
     
     handleClick = (event, index, obj) => {
         var answers = this.state.answers;
-        console.log(event.target);
+        console.log(event);
         var questionIndex = 5;
         if(this.props.type === 'steps') {
             if(questionIndex + 1 > answers.length) {
@@ -166,6 +166,19 @@ class TreeCard extends React.Component {
     handleAddAnswer = () => {
         var answers = this.state.answers;
         answers.push("a1");
+        this.setState({
+            answers: answers
+        })
+    }
+
+    redirectHandle = (target, prop, value) => {
+        console.log(target);
+    }
+
+    handleDelAnswer = () => {
+        var answers = this.state.answers;
+        var index = 0;
+        answers.splice(index, 1);
         this.setState({
             answers: answers
         })
@@ -224,6 +237,8 @@ class TreeCard extends React.Component {
                 style={styles.answerMenu}
                 value={this.state.value}
                 click={this.handleClick} 
+                redirectHandle={this.redirectHandle}
+                handleDelAnswer={this.handleDelAnswer}
                 edit={this.state.editing} 
                 items={itemsData}
                 options={this.getOptions(data, optionType)} />
