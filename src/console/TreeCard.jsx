@@ -329,7 +329,7 @@ class TreeCard extends React.Component {
                             null
                         }
                         
-                        <FlatButton icon={<FontIcon className='fa fa-trash' />} secondary={true} />
+                        <FlatButton icon={<FontIcon className='fa fa-trash' />} secondary={true} onClick={this.props.click}/>
                     </CardActions>
                 </Card>
             </div>
