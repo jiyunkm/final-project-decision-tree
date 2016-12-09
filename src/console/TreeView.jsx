@@ -179,6 +179,14 @@ class TreeList extends React.Component {
         return arr;
     }
 
+    handleDelCard = (idx) => {
+        var list = this.state.currentList;
+        list.splice(idx, 1);
+        this.setState({
+            currentList: list
+        })
+    }
+
     // This function changes the data of the given node in the tree. 
     // It is passed to each individual card to save its changes.
     setData = (id, nodeData) => {
@@ -231,7 +239,9 @@ class TreeList extends React.Component {
                                        data={nodeData}
                                        setData={this.setData}
                                        tree={this.props.tree}
-                                       edit={nodeData.id == this.props.editId} />
+                                       edit={nodeData.id == this.props.editId}
+                                       click={() => this.handleDelCard(idx)}
+                                        />
                         }) : null
                     }
                 </div>

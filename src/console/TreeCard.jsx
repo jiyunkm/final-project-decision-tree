@@ -154,9 +154,16 @@ class TreeCard extends React.Component {
     
 
     handleTitleChange = (e) => {
-        this.setState({
-            title: e.target.value
-        });
+        if(this.props.type === 'steps') {
+            this.setState({
+                title: e.target.value
+            });
+        } else {
+            this.setState({
+                text: e.target.value
+            });
+        }
+        
     }
     
     handleDescChange = (e) => {
@@ -181,6 +188,7 @@ class TreeCard extends React.Component {
             this.setState({
                 question: value
             })
+            console.log(this.state.question)
         }
         // console.log(this.state.answers);
     }
@@ -289,12 +297,10 @@ class TreeCard extends React.Component {
             );
             
         } else if (this.props.type === 'answers') {
-            title = this.props.data.text;
-            let itemsData = [];
-            itemsData.push(this.props.data.question);
+            title = this.state.text;
             textComp = (
                 <CardText style={styles.text}>
-                     {dropDown(itemsData)}
+                     {dropDown([this.state.question])}
                 </CardText>
             );
         }
@@ -327,7 +333,7 @@ class TreeCard extends React.Component {
                             null
                         }
                         
-                        <FlatButton icon={<FontIcon className='fa fa-trash' />} secondary={true} />
+                        <FlatButton icon={<FontIcon className='fa fa-trash' />} secondary={true} onClick={this.props.click}/>
                     </CardActions>
                 </Card>
             </div>
