@@ -66,12 +66,18 @@ class TreeCard extends React.Component {
         this.state = {
             expanded: this.props.edit,
             value: 1,
-            answers: [],
+            answers: this.props.data.answers,
             editing: this.props.edit,
             title: this.props.data.title,
             desc: this.props.data.desc,
             text: this.props.data.text,
-            question: this.props.data.question
+            question: this.props.data.question,
+
+            tempTitle: '',
+            tempDesc: '',
+            tempText: '',
+            tempQuestion: '',
+            tempAnswers: []
             
         };
     }
@@ -85,7 +91,14 @@ class TreeCard extends React.Component {
             this.setState({
                 expanded: true,
                 editing: true,
+
+                tempTitle: this.state.title,
+                tempDesc: this.state.desc,
+                tempText: this.state.text,
+                tempQuestion: this.state.question,
+                tempAnswers: this.state.answers
             });
+
         } else {
             // Saving
             let data = null;
@@ -105,6 +118,7 @@ class TreeCard extends React.Component {
                     "text": this.state.text
                 }
             }
+
             console.log(data);
             this.props.setData(this.props.id, data)
         }
@@ -112,8 +126,17 @@ class TreeCard extends React.Component {
 
     handleEditCancel = () => {
         if (this.state.editing) {
-            this.setState({ editing: false });
+            this.setState({ 
+                editing: false,
+
+                answers: this.state.tempAnswers,
+                title: this.state.tempTitle,
+                desc: this.state.tempDesc,
+                text: this.state.tempText,
+                question: this.state.tempQuestion,
+            });
         }
+
     };
 
     handleToggle = (event, toggle) => {
@@ -144,30 +167,44 @@ class TreeCard extends React.Component {
         });
     }
     
-    handleClick = (event, index, obj) => {
-        var answers = this.state.answers;
-        console.log(event.target);
-        var questionIndex = 5;
+    handleClick = (index, target, prop, value) => {
         if(this.props.type === 'steps') {
-            if(questionIndex + 1 > answers.length) {
-                answers.push(obj);
+            var answers = this.state.answers;
+            if(index + 1 > answers.length) {
+                answers.push(value);
                 
             } else {
-                answers[questionIndex] = obj;
+                answers[index] = value;
             }
             this.setState({
                 answers: answers
             })
         } else {
             this.setState({
-                question: obj
+                question: value
             })
         }
+        // console.log(this.state.answers);
     }
     
     handleAddAnswer = () => {
         var answers = this.state.answers;
         answers.push("a1");
+        this.setState({
+            answers: answers
+        })
+        console.log(this.state.tempAnswers);
+        
+    }
+
+    redirectHandle = (target, prop, value) => {
+
+    }
+
+    handleDelAnswer = (index) => {
+        var answers = this.state.answers;
+        var index = index;
+        answers.splice(index, 1);
         this.setState({
             answers: answers
         })
@@ -226,6 +263,8 @@ class TreeCard extends React.Component {
                 style={styles.answerMenu}
                 value={this.state.value}
                 click={this.handleClick} 
+                redirectHandle={this.redirectHandle}
+                handleDelAnswer={this.handleDelAnswer}
                 edit={this.state.editing} 
                 items={itemsData}
                 options={this.getOptions(data, optionType)} />
@@ -240,7 +279,7 @@ class TreeCard extends React.Component {
                 'No answer';
             textComp = (
                 <CardText style={styles.text} expandable={true}>
-                     <p>{<TextState title={this.props.data.desc} editing={this.state.editing} handle={this.handleDescChange}/> }</p>
+                     <p>{<TextState title={this.state.desc} editing={this.state.editing} handle={this.handleDescChange}/> }</p>
                      {dropDown(this.state.answers)}
                     
                      <AddAnswer edit={this.state.editing} style={this.button} click={this.handleAddAnswer}/>
