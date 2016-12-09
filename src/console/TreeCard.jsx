@@ -54,8 +54,6 @@ const styles = {
     }
 }
 
-var data = require('../d.json');
-
 class TreeCard extends React.Component {
 
     constructor(props) {
@@ -267,7 +265,7 @@ class TreeCard extends React.Component {
                 handleDelAnswer={this.handleDelAnswer}
                 edit={this.state.editing} 
                 items={itemsData}
-                options={this.getOptions(data, optionType)} />
+                options={this.getOptions(this.props.tree, optionType)} />
         );
         
         
