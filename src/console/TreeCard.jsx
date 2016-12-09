@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, Chip, FontIcon} from 'material-ui';
 import Dropdown from './CardComp/Dropdown';
 import AnswerMenu from './CardComp/AnswerMenu';
@@ -12,6 +13,8 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import AddAnswer from './CardComp/button';
 import TextField from 'material-ui/TextField';
 import TextState from "./CardComp/EditText";
+
+import $ from 'jquery';
 
 import '../index.css';
 
@@ -203,8 +206,16 @@ class TreeCard extends React.Component {
         
     }
 
-    redirectHandle = (target, prop, value) => {
-
+    redirectHandle = (event) => {
+        event.preventDefault();
+        let btn = event.target;
+        console.log(btn);
+        let cid = btn.id.split(':')[0];
+        
+        let elem = $('#' + cid);
+        if (elem && elem !== null) {
+            $(window).scrollTop( elem.position().top );
+        }
     }
 
     handleDelAnswer = (index) => {
