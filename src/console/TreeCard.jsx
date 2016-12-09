@@ -65,6 +65,11 @@ class TreeCard extends React.Component {
             value: 1,
             answers: [],
             editing: this.props.edit,
+            title: this.props.data.title,
+            desc: this.props.data.desc,
+            text: this.props.data.text,
+            question: this.props.data.question
+            
         };
     }
 
@@ -72,18 +77,35 @@ class TreeCard extends React.Component {
         this.setState({expanded: expanded});
     };
 
-    handleEditChange = () => {
+    handleEditChange = (e) => {
+        var data = null;
         if(!this.state.editing){
             this.setState({
                 expanded: true,
                 editing: true,
             });
+            
+            
         } else {
             this.setState({
                 editing: false,
-            });
+            })
+            
+            if(this.props.type === 'steps'){
+                data = {
+                    "title": this.state.title,
+                    "desc": this.state.desc,
+                    "answers": this.state.answers
+                }
+            } else {
+                data = {
+                    "question": this.state.question,
+                    "id": this.props.data.id,
+                    "text": this.state.text
+                }
+            }
+        console.log(data);
         }
-        
     };
 
     handleEditCancel = () => {
@@ -106,11 +128,46 @@ class TreeCard extends React.Component {
 
     handleChange = (event, index, value) => this.setState({value});
 
-    handleAddAnswer = () => {
-        this.answers.push();
-        this.setState({answers: false});
-    };
+    
 
+    handleTitleChange = (e) => {
+        this.setState({
+            title: e.target.value
+        });
+    }
+    
+    handleDescChange = (e) => {
+        this.setState({
+            desc: e.target.value
+        });
+    }
+    
+    handleClick = (event, index, obj) => {
+        var answers = this.state.answers;
+        if(this.props.type === 'steps') {
+            if(index + 1 > answers.length) {
+                answers.push(obj);
+            } else {
+                answers[index] = obj;
+            }
+            this.setState({
+                answers: answers
+            })
+        } else {
+            this.setState({
+                question: obj
+            })
+        }
+    }
+    
+    handleAddAnswer = () => {
+        var answers = this.state.answers;
+        answers.push("a1");
+        this.setState({
+            answers: answers
+        })
+    }
+    
     getOptions = (data, type) => {
         let options = [];
         if (data.hasOwnProperty(type)) {
@@ -127,9 +184,23 @@ class TreeCard extends React.Component {
         }
         return options;
     };
+    
+    componentWillMount() {
+        if(this.props.type === 'steps'){
+                this.setState({
+                    answers: this.props.data.answers,
+                    title: this.props.data.title,
+                    desc: this.props.data.desc
+                })
+            } else {
+                this.setState({
+                    question: this.props.data.question,
+                    text: this.props.data.text
+                })
+            }
+    }
 
     render() {
-
         const chipAvatar = <Chip style={styles.chip}>{this.props.data.id}</Chip>;
         
         let title = '';
@@ -162,11 +233,13 @@ class TreeCard extends React.Component {
             subtitle = this.props.data.answers.length + ' answers';
             textComp = (
                 <CardText style={styles.text} expandable={true}>
-                     <p>{<TextState title={this.props.data.desc} editing={this.state.editing}/> }</p>
-                     {dropDown(this.props.data.answers)}
-                     <AddAnswer edit={this.state.editing} style={this.button}/>
+                     <p>{<TextState title={this.props.data.desc} editing={this.state.editing} handle={this.handleDescChange}/> }</p>
+                     {dropDown(this.state.answers)}
+                    
+                     <AddAnswer edit={this.state.editing} style={this.button} click={this.handleAddAnswer}/>
                 </CardText>
             );
+            console.log(this.props.data.answers);
             
         } else if (this.props.type === 'answers') {
             title = this.props.data.text;
@@ -188,7 +261,7 @@ class TreeCard extends React.Component {
                     onExpandChange={this.handleExpandChange}>
                     
                     <CardHeader
-                        title={<TextState title={title} editing={this.state.editing}/> }
+                        title={<TextState title={title} editing={this.state.editing} handle={this.handleTitleChange}/> }
                         subtitle={subtitle}
                         avatar={chipAvatar}
                         actAsExpander={this.props.type === 'steps'}

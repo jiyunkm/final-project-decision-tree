@@ -8,7 +8,7 @@ var AddAnswer = React.createClass({
         let button = null;
         if(this.props.edit) {
             button = (
-                <FloatingActionButton mini={true} style={this.props.style}>
+                <FloatingActionButton mini={true} style={this.props.style} onClick={this.props.click}>
                     <ContentAdd />
                 </FloatingActionButton>
             )

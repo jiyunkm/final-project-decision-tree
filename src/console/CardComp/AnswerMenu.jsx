@@ -48,7 +48,8 @@ var AnswerMenu = React.createClass({
                             key={'drop-' + key} 
                             edit={this.props.edit} value={item} 
                             click={this.props.click} 
-                            options={this.props.options} />
+                            options={this.props.options}
+                        />
 
                         {this.props.type === 'steps' ?
                             (<span>

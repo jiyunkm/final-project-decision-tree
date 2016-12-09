@@ -14,6 +14,7 @@ var TextState = React.createClass({
                   id="text-field-default"
                   multiLine={true}
                   defaultValue={this.props.title}
+                  onChange={this.props.handle}
                 />
             )
         } else {
