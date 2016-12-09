@@ -144,11 +144,14 @@ class TreeCard extends React.Component {
     
     handleClick = (event, index, obj) => {
         var answers = this.state.answers;
+        console.log(event.target);
+        var questionIndex = 5;
         if(this.props.type === 'steps') {
-            if(index + 1 > answers.length) {
+            if(questionIndex + 1 > answers.length) {
                 answers.push(obj);
+                
             } else {
-                answers[index] = obj;
+                answers[questionIndex] = obj;
             }
             this.setState({
                 answers: answers
