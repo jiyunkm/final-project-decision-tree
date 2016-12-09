@@ -1,8 +1,8 @@
 {
-  "name": "a6-starter-repo",
+  "name": "final-decision-tree",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://http://students.washington.edu/liuh25/info343/a6-collaboration/",
+  "homepage": "http://http://students.washington.edu/liuh25/info343/final/",
   "devDependencies": {
     "react-scripts": "0.7.0"
   },
