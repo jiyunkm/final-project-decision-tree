@@ -222,12 +222,16 @@ class TreeCard extends React.Component {
             for (var prop in data[type]) {
                 if (!data[type].hasOwnProperty(prop)) continue;
                 let text = prop + ': ';
+                let redr = '';
+                
                 if (type === "Answer") {
                     text += data[type][prop]['text'];
+                    redr = data[type][prop]['question'];
+                    redr += (': ' + data['Question'][redr]['title']);
                 } else if (type === 'Question') {
                     text += data[type][prop]['title'];
                 }
-                options.push({ value: prop, text: text });
+                options.push({ value: prop, text: text, redr: redr});
             }
         }
         return options;

@@ -1,31 +1,36 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: GillSans, Calibri, Trebuchet, sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: GillSans, Calibri, Trebuchet, sans-serif;
 }
 
 header, footer {
-  background-color: #81c784;
-  margin: 0px;
-  padding: 30px;
-  overflow: hidden;
+    background-color: #00BCD4;
+    margin: 0px;
+    padding: 30px;
+    overflow: hidden;
+}
+
+header {
+    color: antiquewhite;
+    font-family: 'Bungee', cursive;
 }
 
 header h1 {
-  margin: 0px;
+    margin: 0px;
 }
 
 header a, footer p, footer a {
-  float: right;
+    float: right;
 }
 
 footer a img {
-  width: 30px;
-  height: 30px;
+    width: 30px;
+    height: 30px;
 }
 
 footer p, footer a img {
-  margin: 5px;
+    margin: 5px;
 }
 
 footer {
@@ -39,22 +44,22 @@ footer {
 }
 
 .mainSection {
-  text-align: center;
-  padding: 30px;
+    text-align: center;
+    padding: 30px;
 }
 
 .question {
-  margin: 30px;
+    margin: 30px;
 }
 
 .flex-box {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-  justify-content: center;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    justify-content: center;
 }
 
 .flex-item {
-  flex: none;
-  margin: 5px;
+    flex: none;
+    margin: 5px;
 }
